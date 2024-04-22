@@ -1,0 +1,4 @@
+{
+  "keyboard.dispatch": "keyCode",
+  "vscode-neovim.NVIM_APPNAME": "nvcode"
+}
