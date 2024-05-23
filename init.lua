@@ -22,11 +22,22 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
   {
-    "ggandor/leap.nvim",
-    config = function()
-      require('leap').add_default_mappings()
-    end,
-  },
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {
+      modes = {
+        char = {
+          enabled = false
+        }
+      }
+    },
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+    },
+  }
 }, {})
 
 -- [[ Setting options ]]
@@ -87,6 +98,16 @@ end)
 
 vim.keymap.set("n", "[d", function ()
   require('vscode-neovim').action('editor.action.marker.prevInFiles')
+end)
+
+
+vim.keymap.set("n", "<leader>yp", function()
+	local file_name = vim.fn.fnamemodify(vim.fn.expand("%"), ":t")
+	local line_number = vim.fn.line(".")
+	local file_line = file_name .. ":" .. line_number
+
+	vim.fn.setreg("+", file_line)
+	vim.notify("Copied to clipboard: " .. file_line, vim.log.levels.INFO)
 end)
 
 -- vim: ts=2 sts=2 sw=2 et
